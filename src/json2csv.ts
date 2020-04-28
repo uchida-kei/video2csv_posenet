@@ -37,10 +37,6 @@ const json2csv = (movieName: string) => {
   const resultCsv: (string[] | number[])[] = [CreateColumun(partList)];
 
   const filesLen = countFile(`${__dirname}/../json/`, 'json');
-  while (filesLen !== countFile(`${__dirname}/../images/`, 'png')) {
-    console.log('stop');
-  }
-  console.log(filesLen);
   resultCsv.push(
     ...iota(filesLen).map(
       (fileNum: number): Array<number> => {
