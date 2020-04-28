@@ -38,6 +38,7 @@
     "@tensorflow/tfjs-core": "^1.7.3",
     "@tensorflow/tfjs-node": "^1.7.3",
     "canvas": "^2.6.1",
+    "csv-stringify": "^5.4.3",
     "fs-extra": "^9.0.0"
   }
 }

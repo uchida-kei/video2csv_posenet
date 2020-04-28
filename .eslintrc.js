@@ -36,7 +36,7 @@ module.exports = {
       ],
       rules: {
         '@typescript-eslint/no-empty-function': 'off',
-        '@typescript-eslint/no-unused-vars': 'error',
+        '@typescript-eslint/no-unused-vars': 'warn',
         '@typescript-eslint/explicit-member-accessibility': [
           'error',
           {

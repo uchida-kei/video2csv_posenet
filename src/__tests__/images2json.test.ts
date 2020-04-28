@@ -1,5 +1,5 @@
-import { countFrame } from '../images2json';
+import { countFile } from '../util';
 
 test('0 count test', () => {
-  expect(countFrame('')).toBe(0);
+  expect(countFile('', '')).toBe(0);
 });

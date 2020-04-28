@@ -142,3 +142,5 @@ dist
 dist
 images
 json
+csv
+*.mp4
