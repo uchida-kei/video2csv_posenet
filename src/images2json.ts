@@ -1,6 +1,6 @@
 import * as posenet from '@tensorflow-models/posenet';
 import fs from 'fs';
-import fsEx from 'fs-extra';
+// import fsEx from 'fs-extra';
 import * as tf from '@tensorflow/tfjs-node';
 import { countFile } from './util';
 
@@ -14,24 +14,29 @@ const image2pose = async (
   return pose;
 };
 
-const images2json = async (dir: string): Promise<void> => {
+const images2json = async (dir: string): Promise<posenet.Pose[]> => {
   const net = await posenet.load();
   const lastFrameNum = countFile(dir, 'png');
   if (lastFrameNum > 0) {
-    [...Array(lastFrameNum + 1).keys()]
-      .slice(1)
-      .map((imageNum: number): number => {
-        image2pose(net, `${dir}/${imageNum}.png`)
-          .then((pose) => {
-            fsEx.outputJson(`json/${imageNum}.json`, pose);
-          })
-          .catch((e) => {
-            throw e;
-          });
-        return 0;
-      });
+    const jsonList = await Promise.all(
+      [...Array(lastFrameNum + 1).keys()]
+        .slice(1)
+        .map(async (imageNum: number) => {
+          const result = await image2pose(net, `${dir}/${imageNum}.png`)
+            .then((pose) => {
+              // fsEx.outputJson(`json/${imageNum}.json`, pose);
+              return pose;
+            })
+            .catch((e) => {
+              throw e;
+            });
+          return result;
+        })
+    );
+    return jsonList;
   }
-  console.log('Done');
+  const empJsonList: posenet.Pose[] = [];
+  return empJsonList;
 };
 
 export default images2json;

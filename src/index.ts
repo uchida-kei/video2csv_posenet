@@ -9,8 +9,9 @@ export const hello = (name: string): string => {
 
 const main = async (moviePath: string) => {
   video2frameImage(moviePath);
-  await images2json(`${__dirname}/../images`);
-  json2csv(getMovieName(moviePath));
+  images2json(`${__dirname}/../images`).then((jsonList) =>
+    json2csv(jsonList, getMovieName(moviePath))
+  );
 };
 
 console.log(hello('Start'));

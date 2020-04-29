@@ -1,7 +1,5 @@
 import fs from 'fs';
-import fsEx from 'fs-extra';
 import csv from 'csv-stringify';
-import { countFile, iota } from './util';
 
 const partList = [
   'nose',
@@ -33,15 +31,13 @@ const CreateColumun = (pList: string[]): string[] => {
   return columuns;
 };
 
-const json2csv = (movieName: string) => {
+const json2csv = (jsons: any, movieName: string) => {
   const resultCsv: (string[] | number[])[] = [CreateColumun(partList)];
 
-  const filesLen = countFile(`${__dirname}/../json/`, 'json');
   resultCsv.push(
-    ...iota(filesLen).map(
-      (fileNum: number): Array<number> => {
-        const json = fsEx.readJsonSync(`${__dirname}/../json/${fileNum}.json`);
-        const jsonList = [fileNum, json.score];
+    ...jsons.map(
+      (json: any, index: number): Array<number> => {
+        const jsonList = [index + 1, json.score];
         json.keypoints.map((partObj: any): void => {
           jsonList.push(partObj.score);
           jsonList.push(partObj.position.x);
@@ -51,6 +47,7 @@ const json2csv = (movieName: string) => {
       }
     )
   );
+
   csv(resultCsv, (err, data) => {
     try {
       fs.mkdirSync(`${__dirname}/../csv/`);
@@ -60,6 +57,7 @@ const json2csv = (movieName: string) => {
       }
     }
     fs.writeFileSync(`${__dirname}/../csv/${movieName}.csv`, data);
+    console.log('Done');
   });
 };
 
